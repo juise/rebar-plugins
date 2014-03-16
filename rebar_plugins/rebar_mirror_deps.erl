@@ -30,22 +30,12 @@ process_deps_ll(Fun, Cmd, Deps, DepsDir, BaseDir) ->
         end, Deps).
 
 get_dep_mirror(App, File, Dir, Cmd) ->
-%    try
         rebar_utils:sh(lists:flatten(io_lib:format(Cmd, [File, File])), [{use_stdout, false}, {cd, Dir}]),
         rebar_utils:sh("tar -xzf " ++ File, [{use_stdout, false}, {cd, Dir}]).
-%    catch
-%        E:R ->
-%            pass
-%    end.
 
 upd_dep_mirror(App, File, Dir, Cmd) ->
-%    try
         rebar_utils:sh("tar -czf " ++ File ++ " " ++ atom_to_list(App), [{use_stdout, false}, {cd, Dir}]),
         rebar_utils:sh(lists:flatten(io_lib:format(Cmd, [File, File])), [{use_stdout, false}, {cd, Dir}]).
-%    catch
-%        E:R ->
-%            pass
-%    end.
 
 prepare_dir(DepsDir, BaseDir) ->
     Dir = filename:join(BaseDir, DepsDir),
